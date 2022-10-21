@@ -18,7 +18,7 @@ class Game
      @board.wiinner?(player.marker)
    end
 
-   def print_board 
-    @board.print_grid
+   def display_board 
+    @board.display
    end
 end

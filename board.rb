@@ -6,19 +6,27 @@ class Board
     @grid = Array.new(HEIGHT) { Array.new(WIDTH, :" ") }
   end
 
-  def print_grid    
-    @grid.each do |row|
-      puts
-      row.each do |cell|
-        print "[ #{cell} ]"  
-      end       
-    end  
-     puts    
+  def display  
+    @grid.reduce("\n") { |output, row| output << format_row(row) } << "\n"    
   end  
 
   def wiinner?(marker) 
     row_win?(marker) || column_win?(marker) || diagonal_win?(marker) 
   end
+
+  def [](y, x) 
+    @grid[y][x]
+  end
+
+  def []=(y, x, marker) 
+    if @grid[y][x] == :" " && [:X, :O].include?(marker)
+      @grid[y][x] = marker
+    else 
+      false
+    end
+  end
+
+  private
 
   def row_win?(marker)
     @grid.any? do |row|
@@ -45,34 +53,7 @@ class Board
     end
   end
 
-  def [](y, x) 
-    @grid[y][x]
-  end
-
-  def []=(y, x, marker) 
-    if @grid[y][x] == :" " && [:X, :O].include?(marker)
-      @grid[y][x] = marker
-    else 
-      false
-    end
+  def format_row(row)
+    row.reduce("") { |row_string, cell| row_string << "[ #{cell} ]" } << "\n"
   end
 end
-
-# def check_and_print 
-#  @b.print_grid
-#  puts
-#  p @b.row_win(:X)
-#  p @b.row_win(:O)
-#  p @b.column_win(:X)
-#  p @b.column_win(:O)
-#  p @b.diagonal_win(:X)
-#  p @b.diagonal_win(:O)
-# end
-
-# @b = Board.new
-# @b[0, 2] = :O
-# check_and_print 
-# @b[1, 1] = :O
-# check_and_print
-# @b[2, 0] = :O
-# check_and_print
