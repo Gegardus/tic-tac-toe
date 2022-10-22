@@ -6,8 +6,9 @@ class Board
     @grid = Array.new(HEIGHT) { Array.new(WIDTH, :" ") }
   end
 
-  def wiinner?(marker) 
-    row_win?(marker) || column_win?(marker) || diagonal_win?(marker) 
+  def wiinner?(player) 
+    marker = player.marker
+    row_win?(marker) || column_win?(marker) || diagonal_win?(marker)    
   end
 
   def [](y, x) 
@@ -64,12 +65,22 @@ class Board
   end
 
   def diagonal_win?(marker) 
-    (0...WIDTH).any? do |column|
-      @grid.all? do |row|
-        row[column] == marker
-        column += 1
+    [
+      -> (i) { i },
+      -> (i) { -(i + 1) }
+    ].any? do |match_to_column|
+      (0...HEIGHT).all? do |row_index|
+        @grid[row_index] [match_to_column.call(row_index)] == marker
       end
     end
   end
 
+  # def diagonal_win?(marker) 
+  #   (0...WIDTH).any? do |column|
+  #     @grid.all? do |row|
+  #       row[column] == marker
+  #       column += 1
+  #     end
+  #   end
+  # end
 end

@@ -5,6 +5,7 @@ class Player
       column: -> (input) { input.to_i - 1 }
     }
     attr_reader :marker
+    attr_reader :name
 
     def initialize(name, marker)
       @name = name
