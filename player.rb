@@ -1,5 +1,9 @@
 class Player 
     ROW_MAP = (:A..:C).zip(0..2).to_h
+    TRANSALTIONS = {
+      row: -> (input) { ROW_MAP[input[0].upcase.to_sym] },
+      column: -> (input) { input.to_i - 1 }
+    }
     attr_reader :marker
 
     def initialize(name, marker)
@@ -8,41 +12,26 @@ class Player
       @score = 0
     end
 
-    def get_move        
-      [get_row, get_col]  
-    end
-
-    def get_row   
-      loop do
-        prompt_choice('row')
-        input = gets
-        choice = translate_row(input)
-        return choice if in_bounds?(choice) 
-        puts 'Invalid row.'
+    def get_move  
+      TRANSALTIONS.map do |row_or_column, translator| 
+        get_coordinate(row_or_column, translator) 
       end
     end
 
-    def get_col
-      loop do
-        prompt_choice('column')
-        input = gets
-        choice = translate_col(input)
-        return choice if in_bounds?(choice) 
-        puts 'Invalid column.'
-      end  
-    end
+    private
 
-    def translate_row(input) 
-      ROW_MAP[input[0].upcase.to_sym] 
-    end
+    def get_coordinate(row_or_column, translator) 
+    loop do
+      print prompt_choice(row_or_column)
+      input = gets
+      choice = translator.call(input)
+      return choice if in_bounds?(choice) 
+      puts "Invalid #{ row_or_column }."
+    end 
+   end
 
-    def translate_col(input) 
-      input.to_i - 1      
-    end
-
-    def prompt_choice(string) 
-      puts "Pick a #{string}"
-      print "> " 
+   def prompt_choice(row_or_column) 
+      "Pick a #{row_or_column}\n"
     end
 
     def in_bounds?(choice) 
