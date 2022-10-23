@@ -1,6 +1,7 @@
 require_relative 'board'
 
 class Game 
+  
     def initialize(players)
     @players = players
     @board = Board.new
@@ -8,9 +9,9 @@ class Game
 
    def play_until_end 
     current_player, other_player = @players
-    until @wiinner do      
+    until @wiinner || !@board.spaces_left? do      
       play_turn(current_player)      
-      current_player, other_player = other_player, current_player
+      current_player, other_player = other_player, current_player      
     end
     puts @board.display
     @wiinner
@@ -19,8 +20,11 @@ class Game
    def play_turn(player)
     puts @board.display
     puts "It's #{player.name}'s turn."
-    move = player.get_move
-    @board[*move] = (player.marker)  
+    loop do
+      target_cell = player.get_move
+      break if @board.place_marker(target_cell, player.marker)  
+      puts "Invalid move."
+    end  
     @wiinner = player if @board.wiinner?(player)    
    end  
 end

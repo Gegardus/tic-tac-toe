@@ -4,8 +4,11 @@ class Player
       row: -> (input) { ROW_MAP[input[0].upcase.to_sym] },
       column: -> (input) { input.to_i - 1 }
     }
-    attr_reader :marker
-    attr_reader :name
+    attr_reader :name, :marker, :score
+
+    def score 
+      @score
+    end
 
     def initialize(name, marker)
       @name = name
@@ -17,6 +20,10 @@ class Player
       TRANSALTIONS.map do |row_or_column, translator| 
         get_coordinate(row_or_column, translator) 
       end
+    end
+
+    def increment_score 
+      @score += 1
     end
 
     private
@@ -32,7 +39,7 @@ class Player
    end
 
    def prompt_choice(row_or_column) 
-      "Pick a #{row_or_column}\n"
+      "Pick a #{row_or_column}\n> "
     end
 
     def in_bounds?(choice) 

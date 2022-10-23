@@ -1,6 +1,10 @@
 class Board
   WIDTH = 3
   HEIGHT = WIDTH
+  STABBY = [
+    -> (i) { i },
+    -> (i) { -(i + 1) }
+  ]
   
   def initialize
     @grid = Array.new(HEIGHT) { Array.new(WIDTH, :" ") }
@@ -11,16 +15,17 @@ class Board
     row_win?(marker) || column_win?(marker) || diagonal_win?(marker)    
   end
 
-  def [](y, x) 
-    @grid[y][x]
+  def spaces_left? 
+    @grid.any? do |row| 
+      row.any? do |cell| 
+        cell = :" "
+      end
+    end
   end
 
-  def []=(y, x, marker) 
-    if @grid[y][x] == :" " && [:X, :O].include?(marker)
-      @grid[y][x] = marker
-    else 
-      false
-    end
+  def place_marker(coordinates, marker) 
+    y, x = coordinates
+    @grid[y][x] = marker if @grid[y][x] == :" "   
   end
 
   def display  
@@ -65,10 +70,7 @@ class Board
   end
 
   def diagonal_win?(marker) 
-    [
-      -> (i) { i },
-      -> (i) { -(i + 1) }
-    ].any? do |match_to_column|
+    STABBY.any? do |match_to_column|
       (0...HEIGHT).all? do |row_index|
         @grid[row_index] [match_to_column.call(row_index)] == marker
       end
