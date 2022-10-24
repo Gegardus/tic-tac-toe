@@ -76,13 +76,4 @@ class Board
       end
     end
   end
-
-  # def diagonal_win?(marker) 
-  #   (0...WIDTH).any? do |column|
-  #     @grid.all? do |row|
-  #       row[column] == marker
-  #       column += 1
-  #     end
-  #   end
-  # end
 end
