@@ -27,6 +27,8 @@ class Session
 
   def play_loop     
     loop do      
+      # winner = Game.new(games_played.even? ? @players : @players.reverse)
+      # update_scores(winner)  
       game = Game.new(games_played.even? ? @players : @players.reverse)
       update_scores(game.winner)        
       puts scoreboard

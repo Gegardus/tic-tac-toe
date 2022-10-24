@@ -16,11 +16,12 @@ class Game
     play_loop
     puts @board.display
     puts announce_winner
+    # @winner
    end
 
    def play_loop 
     current_player, other_player = @players
-    until @wiinner || !@board.spaces_left? do      
+    until @winner || !@board.spaces_left? do      
       play_turn(current_player)      
       current_player, other_player = other_player, current_player      
     end
@@ -34,7 +35,7 @@ class Game
       break if @board.place_marker(target_cell, player.marker)  
       puts "Invalid move."
     end  
-    @wiinner = player if @board.wiinner?(player)    
+    @winner = player if @board.winner?(player)    
    end  
 
 
