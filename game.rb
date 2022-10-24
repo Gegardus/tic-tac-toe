@@ -1,10 +1,13 @@
 require_relative 'board'
 
 class Game 
+
+  attr_reader :winner
   
     def initialize(players)
     @players = players
     @board = Board.new
+    play_until_end
    end
 
    def play_until_end 
